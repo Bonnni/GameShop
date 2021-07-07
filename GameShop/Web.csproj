@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\BuissenesLayer\BuissenesLayer.csproj" />
     <ProjectReference Include="..\DataLayer\DataLayer.csproj" />
   </ItemGroup>
