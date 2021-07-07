@@ -6,7 +6,7 @@ namespace DataLayer.Context
     public class EfDbContext : DbContext
     {
 
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<Genre> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Company> Company { get; set; }
 
