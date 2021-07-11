@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DataLayer.Context;
 using Microsoft.EntityFrameworkCore;
+using BuissenesLayer.Interfaces;
+using BuissenesLayer.Implementations;
 
 namespace GameShop
 {
@@ -19,9 +21,10 @@ namespace GameShop
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
             services.AddDbContext<EfDbContext>(option => option.UseSqlServer(
                 Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IProductRepository, EFProductRepository>();
+            services.AddControllers();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
