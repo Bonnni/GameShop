@@ -1,20 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using BuissenesLayer.Interfaces;
 using DataLayer.Entities;
 using DataLayer.Context;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace BuissenesLayer.Implementations
 {
-    class EFProductRepository : IProductRepository
+    public class EFProductRepository : IProductRepository
     {
         private EfDbContext _db;
-        EFProductRepository(EfDbContext db)
+        public EFProductRepository(EfDbContext db)
         {
             _db = db;
+        }
+
+        public async Task<Product> GetProduct(int? id)
+        {
+            if(_db != null)
+            {
+                return await _db.Products.FirstOrDefaultAsync(x => x.ID == id);
+            }
+            return null;
         }
 
         public async Task<int> CreateProduct(Product product)
@@ -50,17 +58,27 @@ namespace BuissenesLayer.Implementations
             return 0;
         }
 
-        public async Task<IQueryable<Product>> GetProducts()
+        public async Task<Product> GetProductByGenre(string category)
         {
             if (_db != null)
             {
-                return (IQueryable<Product>)await _db.Products.ToListAsync();
+                return await _db.Products.Include(x => x.Company).FirstOrDefaultAsync(x => x.Company.Name == category);
             }
 
             return null;
         }
 
-        public async Task<int> UpdateProduct(Product product)
+        public async Task<IEnumerable<Product>> GetProducts()
+        {
+            if (_db != null)
+            {
+                return await _db.Products.ToListAsync();
+            }
+
+            return null;
+        }
+
+        public async Task UpdateProduct(Product product)
         {
             if (_db != null)
             {
@@ -68,8 +86,6 @@ namespace BuissenesLayer.Implementations
 
                 await _db.SaveChangesAsync();
             }
-
-            return 0;
         }
     }
 }

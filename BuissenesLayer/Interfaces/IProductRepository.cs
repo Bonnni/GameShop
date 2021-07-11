@@ -7,10 +7,11 @@ namespace BuissenesLayer.Interfaces
 {
     public interface IProductRepository
     {
-        Task<IQueryable<Product>> GetProducts();
+        Task<IEnumerable<Product>> GetProducts();
+        Task<Product> GetProduct(int? id);
         Task<int> DeleteProduct(int? id);
-        Task<int> UpdateProduct(Product product);
+        Task UpdateProduct(Product product);
         Task<int> CreateProduct(Product product);
-        Task<Product> GetProductByCategory(string category);
+        Task<Product> GetProductByGenre(string category);
     }
 }
