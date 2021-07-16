@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(EfDbContext))]
-    [Migration("20210711155059_EditProductChangeNameProperty")]
-    partial class EditProductChangeNameProperty
+    [Migration("20210716075933_EditTables")]
+    partial class EditTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -75,13 +75,13 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("GenreProduct", b =>
                 {
-                    b.Property<int>("GenresID")
+                    b.Property<int>("GenreID")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductsID")
                         .HasColumnType("int");
 
-                    b.HasKey("GenresID", "ProductsID");
+                    b.HasKey("GenreID", "ProductsID");
 
                     b.HasIndex("ProductsID");
 
@@ -103,7 +103,7 @@ namespace DataLayer.Migrations
                 {
                     b.HasOne("DataLayer.Entities.Genre", null)
                         .WithMany()
-                        .HasForeignKey("GenresID")
+                        .HasForeignKey("GenreID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

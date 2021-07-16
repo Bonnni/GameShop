@@ -9,7 +9,6 @@ namespace DataLayer.Context
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Company> Company { get; set; }
-
         public EfDbContext(DbContextOptions<EfDbContext> options): base(options)
         {
             Database.EnsureCreated();

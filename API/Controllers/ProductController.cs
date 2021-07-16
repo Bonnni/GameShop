@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using BuissenesLayer.Interfaces;
+using DataLayer;
+using DataLayer.Context;
 using DataLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +15,13 @@ namespace Web.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
+       // private readonly EfDbContext _db;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IProductRepository productRepository, EfDbContext db)
         {
+         //  _db = db;
+         //   var sampleData = new SampleData(_db);
+         //   sampleData.InitData();
             _productRepository = productRepository;
         }
 
@@ -28,7 +35,7 @@ namespace Web.Controllers
                 var products = await _productRepository.GetProducts();
                 if (products == null)
                 {
-                    return NotFound();        
+                    return NotFound();
                 }
                 return Ok(products);
             }
@@ -36,17 +43,16 @@ namespace Web.Controllers
             {
                 return BadRequest();
             }
-            
         }
 
-        // GET: api/product/getproduct/id
+        // GET: api/product/getproduct?id=
         [HttpGet]
-        [Route("GetProduct/{id}")]
+        [Route("GetProduct")]
         public async Task<IActionResult> GetProduct(int? id)
         {
             if (id == null)
             {
-                return BadRequest();        
+                return BadRequest();
             }
 
             try
@@ -65,10 +71,10 @@ namespace Web.Controllers
             }
         }
 
-        // GET: api/product/getproduct/genre
+        // GET: api/product/getproduct/genre?genre=
         [HttpGet]
-        [Route("GetProduct/{genre}")]
-        public async Task<IActionResult> GetProduct(string genre)
+        [Route("GetProduct/genre")]
+        public async Task<IActionResult> GetProductByGenre(string genre)
         {
             if (genre == null)
             {
@@ -118,7 +124,7 @@ namespace Web.Controllers
 
         // POST: api/product/deleteproduct/id
         [HttpPost]
-        [Route("DeleteProduct/{id}")]
+        [Route("DeleteProduct")]
         public async Task<IActionResult> DeleteProduct(int? id)
         {
             int result = 0;
@@ -169,6 +175,5 @@ namespace Web.Controllers
             }
             return BadRequest();
         }
-
     }
 }

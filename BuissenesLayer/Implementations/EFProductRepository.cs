@@ -58,23 +58,33 @@ namespace BuissenesLayer.Implementations
             return 0;
         }
 
-        public async Task<Product> GetProductByGenre(string category)
+        public async Task<IEnumerable<ProductDTO>> GetProductByGenre(string genre)
         {
             if (_db != null)
             {
-                return await _db.Products.Include(x => x.Company).FirstOrDefaultAsync(x => x.Company.Name == category);
+                var products = await GetProducts();
+                products.Where(x => x.Genres.Select(x => x == genre).FirstOrDefault());
+                return products;
             }
-
             return null;
         }
 
-        public async Task<IEnumerable<Product>> GetProducts()
+        public async Task<IEnumerable<ProductDTO>> GetProducts()
         {
             if (_db != null)
             {
-                return await _db.Products.ToListAsync();
+                var lists = await _db.Products
+                    .Include(x => x.Company)
+                    .Include(x => x.Genre)
+                    .Select(x => new ProductDTO
+                    {
+                        Id = x.ID,
+                        Name = x.Name,
+                        Company = x.Company.Name,
+                        Genres = x.Genre!.Select(x => x.Name).ToArray()
+                    }).ToListAsync();
+                return lists;
             }
-
             return null;
         }
 
